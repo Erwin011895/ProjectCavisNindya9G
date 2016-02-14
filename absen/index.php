@@ -1,10 +1,33 @@
 <!-- 
-  Tampilan Absensi Cavis 9G, by Indra
+  Absensi Cavis 9G
+  Front End by Indra
+  Back End by Jorvan
 -->
 
 <?php 
-//error_reporting(0); //Tidak menampilkan error meskipun ada error
- ?>
+//Picketlist code
+// using variable $picketlist to hold the name list
+  include('../database/connect.php');
+  $picketing = NULL;
+
+  $query = "SELECT c.nama FROM 
+  cavis c join login lin 
+  on c.nim=lin.nim 
+  left outer join logout lout 
+  on lin.idLogin=lout.idLogin
+  where lin.idLogin not in
+  (
+      SELECT idLogin from logout
+  ) AND DATE(jamLogin) = CURDATE()";
+  $result = mysql_query($query) or die(mysql_error());
+  $i=0;
+  while($row = mysql_fetch_assoc($result))
+  {
+    $picketing[$i] = $row['nama'];
+    $i = $i+1;
+  }
+//end picketlist code
+?>
 
 <html>
 <head>
@@ -14,71 +37,82 @@
 </head>
 
 <body>
-<form action="" method="get">
+<form action="loginnindya.php" method="post">
   <!-- <table width="1307" height="605" border="0"> -->
-  <table width="1307" height="605" border="1">
+  <table width="1307" height="605" border="0">
     <!-- Row 1 -->
     <tr>
-      <td width="250" height="245" align="center"><img src="../assets/img/bslc-logo.jpg" width="239" height="200"/></td>
-      <td align="center">
+      <!-- Image -->
+      <td width="200" height="200" align="center"><img src="../assets/img/logo bslc.png" width="200" height="200"/></td>
+
+      <!-- Title -->
+      <td align="center" width="730">
         <h1 font style="font-family:Arial, Helvetica, sans-serif; color:#0FC">
           OJT 9G Absence System <br>
           Binus Student Learning Community
         </h1>
       </td>
-      <td></td>
+
+      <td>
+        Last Updated: 14-2-2016
+      </td>
     </tr>
 
     <!-- Row 2 -->
     <tr>
+      <!-- NIM text -->
       <td height="89" ><h1 align="right" style="color:#0FC; padding-top:20">NIM</h1></td>
+
+      <!-- textfield -->
       <td><input type="text" name="NIM" id="textfield" size="40px" class="tb5"></td>
-      <td width="338" rowspan="2" valign="top">
+
+      <!-- Picket List -->
+      <td rowspan="2" valign="top">
         <!-- Picket List Table -->
-        <table width="350" height="254" border="1">
+        <table width="350" height="300" border="1">
           <tr align="right">
-            <td width="318" height="24" bgcolor="#00CCCC" align="center" font style="color: #FFF">Picket List</td>
+            <td height="40" bgcolor="#00CCCC" align="center" font style="color: #FFF"><h3>Picket List</h3></td>
           </tr>
           <tr>
-            <td height="222" valign="top">
+            <td height="230" valign="top">
               <?php 
-                if(isset($_GET['NIM']))
-                {
-                  if($_GET['NIM']==1901459125){
-                    echo "Indra";
-                  }
-                }
+              for ($i=0; $i < count($picketing); $i++) { 
+                echo ($i+1).". ".$picketing[$i]."<br>";
+              }                
               ?>
             </td>
           </tr>
         </table>
-        <!-- End Picket List -->
       </td>
+      <!-- End Picket List -->
     </tr>
 
+    <!-- Row 3 -->
     <tr>
       <td height="130">&nbsp;</td>
+
       <td width="207" valign="top">
+
+      <!--LOGIN Button-->
+      <input name="input" type="submit" value="Login" class="btn">
+
+      <!-- MESSAGE -->
         <?php 
-          if(isset($_GET['NIM']) )
-          {
-            if($_GET['NIM']==1901459125){
-            echo "<h3>Indra</h3>";
-            }
+          if (isset($_GET['msg'])) {
+            echo $_GET['msg'];
           }
         ?>
+      <!--END MESSAGE -->
       </td>
     </tr>
 
-    <!-- Admin Button -->
     <tr>
       <td height="77">&nbsp;</td>
 
-      <!-- Login Logout Button -->
-      <td valign="top"><input name="input" type="submit" value="Login" class="btn">
-        <input type="submit" name="button" id="button" value="Logout" class="logout"></td>
+      <td></td>
 
-      <td align="right"><a href="admin.php"><img src="../assets/img/icon_admin_128.png" width="57" height="44"></a></td>
+      <!-- Admin Button -->
+      <td align="center"><a href="../admin/index.php" target="_blank"><img src="../assets/img/icon_admin_128.png" width="57" height="44"></a></td>
     </tr>
 
   </table>

@@ -5,7 +5,6 @@
 	$nim = $_REQUEST['nim'];
 	$nama = null;
 	$nama = $_REQUEST['nama'];
-	
 
 	$result = mysql_query("INSERT INTO cavis (nim, nama) VALUES ( '". $nim ."', '". $nama ."' )");
 	if( $result )
@@ -16,7 +15,4 @@
 	{
 		echo "Error";
 	}
-
-	
-
  ?>

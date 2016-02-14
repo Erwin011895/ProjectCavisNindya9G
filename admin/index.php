@@ -1,3 +1,7 @@
+<!-- 
+  Front-end: Indra
+  Back-end: Erwin
+-->
 <html>
 <head>
 <title>Login Admin</title>
@@ -21,7 +25,14 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td align="center"><input type="submit" name="button" id="button" value="Login Admin" class="btn" size="70px"></td>
+    <td align="center">
+      <input type="submit" name="button" id="button" value="Login Admin" class="btn" size="70px">
+      <?php 
+      if (isset($_GET['msg'])) {
+        echo $_GET['msg'];
+      }
+       ?>
+    </td>
     <td>&nbsp;</td>
   </tr>
 </table>

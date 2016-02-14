@@ -1,3 +1,20 @@
+<?php 
+session_start();
+if (isset($_SESSION['admin'])) 
+{ 
+	include('../database/connect.php');
+	$sqlstr = "SELECT 
+		a.nim, 
+		nama, 
+		sum(timestampdiff(MINUTE,jamlogin,jamlogout)) AS 'Total Menit',
+		floor(sum(timestampdiff(MINUTE,jamlogin,jamlogout)/100)) AS 'Total Shift'
+		FROM 
+		cavis a  left outer join login b on a.nim = b.nim 
+		left outer join logout c on b.idlogin = c.idlogin
+		group by a.nim
+	     ";
+		$hasil = mysql_query($sqlstr) or die(mysql_error());
+?>
 <html>
 <head>
 	<title>Admin: Summary</title>
@@ -26,15 +43,28 @@
 				<td>Total Shift</td>
 			</tr>
 
-			<!-- random content -->
-			<tr>
-				<td><?= 'anyone'  ?></td>
-				<td><?= '1401305354'  ?></td>
-				<td><?= '-100' ?></td>
-				<td><?= '-100'  ?></td>
-			</tr>
+			<?php
+			while($row = mysql_fetch_array($hasil) )
+			{
+			?>
+				<tr>
+					<td> <?php echo $row['nim']; ?> </td>
+					<td> <?php echo $row['nama']; ?> </td>
+					<td> <?php echo $row['Total Menit']; ?> </td>
+					<td> <?php echo $row['Total Shift']; ?> </td>
+				</tr>
+			<?php
+			}
+			?>
 		</table>
 	</div>
 	
 </body>
 </html>
+<?php 
+}
+else
+{
+	header('location:../admin/index.php');
+}
+?>

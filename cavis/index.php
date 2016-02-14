@@ -1,10 +1,13 @@
+<?php 
+session_start();
+if (isset($_SESSION['admin'])) 
+{
+?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<link type="text/css" rel= "stylesheet" href="../assets/css/cavis.css" />
 		<title> Admin: Cavis </title>
-
-
 	</head>
 
 	<body>
@@ -18,7 +21,7 @@
 	  				<li> <a href="#">Data Cavis </a></li>
 	  				<li> <a href="../piket/index.php">Data Absen Piket </a></li>
 	  				<li> <a href="../summary/index.php">Summary Piket </a></li>
-	  				<li> <a href="#">Logout </a></li>
+	  				<li> <a href="../admin/logout.php">Logout </a></li>
 	  			</ul>
 			</div>
 		</div>
@@ -61,13 +64,10 @@
 			
 		</tr>
 
-	
-
 		<?php 
 			while($data = mysql_fetch_array($result))
 			{
 		 ?>
-
 			<tr>
 				<td> 
 					<?php echo $data['nim'] ?> 
@@ -83,9 +83,9 @@
 				</form>
 			</tr>
 			
-			<?php 
-				}
-			 ?>
+		<?php 
+			} //end while
+		 ?>
 			
 			 </table>
 		</div>
@@ -93,3 +93,11 @@
 		
 	</body>
 </html>
+
+<?php
+} //end if
+else
+{
+	header('location:../admin/index.php');
+}
+ ?>

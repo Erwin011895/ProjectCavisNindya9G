@@ -1,3 +1,19 @@
+<?php
+session_start();
+if (isset($_SESSION['admin'])) 
+{ 
+	include('../database/connect.php');
+	$sqlstr = "SELECT a.nim, 
+						nama, 
+						jamlogin, 
+						jamlogout, 
+						timestampdiff(MINUTE,jamlogin,jamlogout) AS 'menit'
+					FROM 
+						cavis a  join login b on a.nim = b.nim 
+								left outer join logout c on b.idlogin = c.idlogin";
+	$hasil = mysql_query($sqlstr,$conn);
+
+?>
 <html>
 <head>
 	<title>Admin: Piket</title>
@@ -22,22 +38,34 @@
 			<tr>
 				<td>Nama</td>
 				<td>NIM</td>
-				<td>Login</td>
-				<td>Logout</td>
+				<td>Jam Login</td>
+				<td>Jam Logout</td>
 				<td>Total Menit</td>
 			</tr>
 
-			<!-- random content -->
-			
-			<tr>
-				<td><?= 'anyone'  ?></td>
-				<td><?= '1401305354'  ?></td>
-				<td><?= '31/2/2090 25:00'  ?></td>
-				<td><?= '30/2/2090 26:00'  ?></td>
-				<td><?= '-100'  ?></td>
-			</tr>
+			<?php
+			while($row = mysql_fetch_array($hasil) )
+			{
+			?>
+				<tr>
+					<td> <?php echo $row['nim']; ?> </td>
+					<td> <?php echo $row['nama']; ?> </td>
+					<td> <?php echo $row['jamlogin']; ?> </td>
+					<td> <?php echo $row['jamlogout']; ?> </td>
+					<td> <?php echo $row['menit']; ?> </td>
+				</tr>
+			<?php
+			}
+			?>
 		</table>
 	</div>
 	
 </body>
 </html>
+<?php 
+}
+else
+{
+	header('location:../admin/index.php');
+}
+?>

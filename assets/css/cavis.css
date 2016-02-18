@@ -6,7 +6,7 @@ div
 {
 	/*z-index: 1;*/
 	position: relative;
-	width: 97.5%;
+	width: 100%;
 	margin-top: -5px;
 	height: 160px;
 	background-color: #eef3f5;
@@ -58,7 +58,7 @@ div
 	position: relative;
 	float: left;
 	margin-top: 0px;
-	width: 97.5%;
+	width: 100%;
 	background-color: #B9D7D9;
 	margin-bottom: -10px;
 }
